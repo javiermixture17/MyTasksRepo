@@ -1,6 +1,7 @@
 package com.example.everisdarmytasksms.controller;
 
 import com.example.everisdarmytasksms.domain.Task;
+import com.example.everisdarmytasksms.exception.ResourceNotFoundException;
 import com.example.everisdarmytasksms.service.TaskService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import java.util.Arrays;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -65,6 +67,19 @@ public class TaskControllerTest {
     }
 
     @Test
+    public void retrieveTaskTestNotFound() throws Exception {
+        when(service.retrieveTask(anyLong())).thenThrow(ResourceNotFoundException.class);
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .get("/tasks/1")
+                .accept(MediaType.APPLICATION_JSON);
+
+        MvcResult result = mockMvc.perform(request)
+                .andExpect(status().isNotFound())
+                .andReturn();
+    }
+
+    @Test
     public void createTaskTest() throws Exception {
         when(service.createTask(any(Task.class))).thenReturn(new Task(1L,"Description 1", Task.TaskStatus.IN_PROGRESS));
 
@@ -103,6 +118,21 @@ public class TaskControllerTest {
                 .accept(MediaType.APPLICATION_JSON);
         MvcResult result = mockMvc.perform(request)
                 .andExpect(status().isOk())
+                .andReturn();
+    }
+
+    @Test
+    public void deleteTaskTestNotFound() throws Exception {
+        doThrow(ResourceNotFoundException.class)
+                .when(service)
+                .deleteTask(anyLong());
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .delete("/tasks/1")
+                .accept(MediaType.APPLICATION_JSON);
+        
+        MvcResult result = mockMvc.perform(request)
+                .andExpect(status().isNotFound())
                 .andReturn();
     }
 
