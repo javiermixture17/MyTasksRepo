@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>everis-dar-mytasks-ms</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>everis-dar-mytasks-ms</name>
 	<description>MyTasks project</description>
 
