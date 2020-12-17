@@ -89,7 +89,7 @@ public class TaskControllerTest {
                 .content("{\"description\":\"Description 1\", \"status\": \"IN_PROGRESS\"}");
 
         MvcResult result = mockMvc.perform(request)
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().json("{id:1,description:\"Description 1\",status:IN_PROGRESS}"))
                 .andReturn();
 
@@ -105,7 +105,7 @@ public class TaskControllerTest {
                 .content("{\"description\":\"Description 1 update\", \"status\": \"FINISHED\"}");
 
         MvcResult result = mockMvc.perform(request)
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().json("{id:1,description:\"Description 1 update\",status:FINISHED}"))
                 .andReturn();
 
@@ -130,7 +130,7 @@ public class TaskControllerTest {
         RequestBuilder request = MockMvcRequestBuilders
                 .delete("/tasks/1")
                 .accept(MediaType.APPLICATION_JSON);
-        
+
         MvcResult result = mockMvc.perform(request)
                 .andExpect(status().isNotFound())
                 .andReturn();

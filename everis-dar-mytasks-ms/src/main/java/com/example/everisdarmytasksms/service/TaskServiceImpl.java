@@ -14,14 +14,16 @@ import java.util.Optional;
  * Task Service Implementation.
  */
 @Service
-// TODO @Transactional
 public class TaskServiceImpl implements TaskService{
 
     /**
-     * Autowiring the Task Repository.
+     * Task Repository.
      */
-    @Autowired
-    private TaskRepository repository;
+    private final TaskRepository repository;
+
+    public TaskServiceImpl(TaskRepository repository) {
+        this.repository = repository;
+    }
 
     /**
      * Get All Tasks.

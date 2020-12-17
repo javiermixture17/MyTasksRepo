@@ -24,11 +24,11 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class TaskServiceTest {
 
-    @InjectMocks
-    private TaskServiceImpl service;
-
     @Mock
     private TaskRepository repository;
+
+    @InjectMocks
+    private TaskServiceImpl service;
 
     @Test
     public void retrieveAllTasksTest() {

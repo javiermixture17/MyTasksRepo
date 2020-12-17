@@ -3,11 +3,11 @@ package com.example.everisdarmytasksms.controller;
 import com.example.everisdarmytasksms.domain.Task;
 import com.example.everisdarmytasksms.exception.ResourceNotFoundException;
 import com.example.everisdarmytasksms.service.TaskService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -18,16 +18,20 @@ import java.util.List;
 public class TaskController {
 
     /**
-     * Autowiring the Task Service.
+     * Task Service.
      */
-    @Autowired
-    private TaskService service;
+    private final TaskService service;
+
+    public TaskController(TaskService service) {
+        this.service = service;
+    }
 
     /**
      * get endpoint to return list of all tasks.
      * @return List of Tasks
      */
     @GetMapping("/tasks")
+    //TODO @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<Task>> retrieveAllTasks() {
         //return new ResponseEntity<>(service.retrieveAllTasks(), HttpStatus.OK);
         return ResponseEntity.ok().body(service.retrieveAllTasks());
@@ -50,7 +54,8 @@ public class TaskController {
      */
     @PostMapping("/tasks")
     public ResponseEntity<Task> createTask(@RequestBody Task newTask) {
-        return ResponseEntity.ok().body(service.createTask(newTask));
+        URI location = URI.create(String.format("/tasks/%d", newTask.getId()));
+        return ResponseEntity.created(location).body(service.createTask(newTask));
     }
 
     /**
@@ -61,7 +66,8 @@ public class TaskController {
      */
     @PutMapping("/tasks/{id}")
     public ResponseEntity<Task> replaceTask(@PathVariable Long id, @RequestBody Task newTask) {
-        return ResponseEntity.ok().body(service.replaceTask(newTask, id));
+        URI location = URI.create(String.format("/tasks/%d", newTask.getId()));
+        return ResponseEntity.created(location).body(service.replaceTask(newTask, id));
     }
 
     /**
