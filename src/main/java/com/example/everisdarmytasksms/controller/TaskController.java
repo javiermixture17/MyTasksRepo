@@ -14,6 +14,7 @@ import java.util.List;
  * Tasks REST Controller.
  */
 
+
 @RestController
 public class TaskController {
 
@@ -76,9 +77,8 @@ public class TaskController {
      * @return Success Message
      */
     @DeleteMapping("/tasks/{id}")
-    public HttpStatus deleteTask(@PathVariable Long id) throws ResourceNotFoundException {
+    public ResponseEntity<String> deleteTask(@PathVariable Long id) throws ResourceNotFoundException {
         this.service.deleteTask(id);
-        //return new ResponseEntity<>("Success", HttpStatus.OK);
-        return HttpStatus.OK;
+        return new ResponseEntity<>("Success", HttpStatus.OK);
     }
 }
